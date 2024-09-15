@@ -6,79 +6,90 @@
     <title>abhi's pkg</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #101010;
-            color: #f0f0f0;
-            margin: 0;
+            font-family: monospace;
+            background-color: #000;
+            color: #fff;
             padding: 20px;
         }
         h1 {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            text-align: left;
+            font-size: 24px;
         }
         .folder, .file {
-            background-color: #202020;
-            border-radius: 8px;
-            padding: 20px;
-            width: 200px;
-            text-align: center;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            display: block;
+            margin-bottom: 8px;
+            transition: transform 0.3s ease-in-out;
+            font-size: 18px;
         }
-        .folder:hover, .file:hover {
-            background-color: #303030;
+        a {
+            text-decoration: none;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+            display: inline-block;
+            transition: color 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
-        .folder-icon, .file-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
+        a:hover {
+            transform: scale(1.1) rotate(5deg);
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+            animation: colorChange 1s infinite;
         }
+        @keyframes colorChange {
+            0% { color: #ff0000; }
+            25% { color: #00ff00; }
+            50% { color: #0000ff; }
+            75% { color: #ff00ff; }
+            100% { color: #ffff00; }
+        }
+        .container {
+            margin: 0;
+        }
+        /* Audio player styling */
         .audio-player {
+            text-align: left;
             margin-top: 20px;
             display: none;
-            text-align: center;
         }
         audio {
             width: 100%;
-            margin-top: 10px;
         }
+        .audio-player h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        /* Back button */
         .back-button {
-            margin-top: 20px;
+            color: #fff;
             cursor: pointer;
-            color: #f0f0f0;
             text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+        .back-button:hover {
+            color: #ff00ff;
         }
     </style>
 </head>
 <body>
 
     <h1>abhi's pkg</h1>
-    
+
     <div id="folderView" class="container">
-        <!-- Music Folder -->
-        <div class="folder" onclick="openFolder('Music')">
-            <div class="folder-icon">📁</div>
-            <div>Music</div>
+        <!-- List files directly -->
+        <div class="folder">
+            <a href="javascript:void(0);" onclick="openFolder('Music')">[Music]</a>
         </div>
     </div>
 
     <!-- Music Folder -->
     <div id="musicFolder" class="container" style="display:none;">
-        <div class="file" onclick="playAudio('Diamonds On v2.mp3')">
-            <div class="file-icon">🎵</div>
-            <div>Diamonds On v2.mp3</div>
+        <div class="file">
+            <a href="javascript:void(0);" onclick="playAudio('Diamonds On v2.mp3')">Diamonds On v2.mp3</a>
         </div>
-        <div class="file" onclick="playAudio('super fast.mp3')">
-            <div class="file-icon">🎵</div>
-            <div>super fast.mp3</div>
+        <div class="file">
+            <a href="javascript:void(0);" onclick="playAudio('super fast.mp3')">super fast.mp3</a>
         </div>
-        <div class="file" onclick="playAudio('scalin master v3.mp3')">
-            <div class="file-icon">🎵</div>
-            <div>scalin master v3.mp3</div>
+        <div class="file">
+            <a href="javascript:void(0);" onclick="playAudio('scalin master v3.mp3')">scalin master v3.mp3</a>
         </div>
     </div>
 
@@ -87,14 +98,15 @@
         <audio id="audioControl" controls>
             Your browser does not support the audio element.
         </audio>
-        <div class="back-button" onclick="goBack()">⬅ Back to Music Folder</div>
+        <br>
+        <a class="back-button" href="javascript:void(0);" onclick="goBack()">⬅ Back to Music Folder</a>
     </div>
 
     <script>
         function openFolder(folder) {
             document.getElementById('folderView').style.display = 'none';
             if (folder === 'Music') {
-                document.getElementById('musicFolder').style.display = 'flex';
+                document.getElementById('musicFolder').style.display = 'block';
             }
         }
 
@@ -107,7 +119,7 @@
 
         function goBack() {
             document.getElementById('audioPlayer').style.display = 'none';
-            document.getElementById('musicFolder').style.display = 'flex';
+            document.getElementById('musicFolder').style.display = 'block';
         }
     </script>
 
