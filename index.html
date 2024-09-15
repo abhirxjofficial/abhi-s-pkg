@@ -14,12 +14,27 @@
             min-height: 100vh;
             overflow-x: hidden;
             font-size: 16px;
+            perspective: 1000px;
         }
         h1 {
             text-align: center;
             font-size: 28px;
             margin: 20px 0;
             color: #ffffff;
+        }
+        .search-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
         }
         .folder, .file {
             font-size: 18px;
@@ -30,6 +45,10 @@
             padding: 10px;
             background-color: #1a1a1a;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .folder:hover, .file:hover {
+            background-color: #333;
         }
         .folder::before {
             content: '▶';
@@ -59,7 +78,6 @@
             list-style: none;
             padding-left: 0;
         }
-        /* Audio player styling */
         .audio-player {
             display: none;
             background-color: #1a1a1a;
@@ -82,7 +100,6 @@
             margin-bottom: 10px;
             color: #ffffff;
         }
-        /* Close button for music player */
         .close-player {
             color: #ff33cc;
             cursor: pointer;
@@ -94,22 +111,48 @@
         .close-player:hover {
             color: #ff0000;
         }
-        /* File size display */
         .file-size {
             font-size: 14px;
             color: #999;
             margin-left: 10px;
         }
-        /* Download link styling */
-        .download-link {
-            margin-left: 10px;
-            color: #ff33cc;
-            text-decoration: underline;
+        .sphere {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            animation: rotate 10s infinite linear, colorChange 5s infinite;
         }
-        .download-link:hover {
-            color: #ff0000;
+        @keyframes rotate {
+            from {
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+            to {
+                transform: rotateX(360deg) rotateY(360deg);
+            }
         }
-        /* Credit scene */
+        @keyframes colorChange {
+            0% {
+                background-color: #ff0000;
+            }
+            25% {
+                background-color: #00ff00;
+            }
+            50% {
+                background-color: #0000ff;
+            }
+            75% {
+                background-color: #ff00ff;
+            }
+            100% {
+                background-color: #ff0000;
+            }
+        }
         .credits {
             position: absolute;
             bottom: 0;
@@ -135,29 +178,46 @@
 
     <h1>abhi's pkg</h1>
 
-    <!-- Folder View -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search files...">
+    </div>
+
     <div id="folderView" class="container">
         <div class="folder" onclick="toggleFolder('musicFolder')">[Music]</div>
         <ul id="musicFolder" class="file-list hidden">
             <li class="file">
                 <a href="javascript:void(0);" onclick="playAudio('Diamonds On v2.mp3', 'Diamonds On v2', '5.2 MB')">Diamonds On v2.mp3</a>
                 <span class="file-size">(5.2 MB)</span>
-                <a href="/mnt/data/Diamonds%20On%20v2.mp3" download class="download-link">Download</a>
             </li>
             <li class="file">
                 <a href="javascript:void(0);" onclick="playAudio('super fast.mp3', 'super fast', '3.8 MB')">super fast.mp3</a>
                 <span class="file-size">(3.8 MB)</span>
-                <a href="/mnt/data/super%20fast.mp3" download class="download-link">Download</a>
             </li>
             <li class="file">
                 <a href="javascript:void(0);" onclick="playAudio('scalin master v3.mp3', 'scalin master v3', '4.1 MB')">scalin master v3.mp3</a>
                 <span class="file-size">(4.1 MB)</span>
-                <a href="/mnt/data/scalin%20master%20v3.mp3" download class="download-link">Download</a>
+            </li>
+            <li class="file">
+                <a href="javascript:void(0);" onclick="playAudio('Yanke East.m4a', 'Yanke East', 'size unknown')">Yanke East.m4a</a>
+            </li>
+            <li class="file">
+                <a href="javascript:void(0);" onclick="playAudio('Lasted - 130bpm : Aminor.wav', 'Lasted - 130bpm : Aminor', 'size unknown')">Lasted - 130bpm : Aminor.wav</a>
+            </li>
+            <li class="file">
+                <a href="javascript:void(0);" onclick="playAudio('Melody.m4a', 'Melody', 'size unknown')">Melody.m4a</a>
+            </li>
+            <li class="file">
+                <a href="javascript:void(0);" onclick="playAudio('Night Time.wav', 'Night Time', 'size unknown')">Night Time.wav</a>
+            </li>
+            <li class="file">
+                <a href="javascript:void(0);" onclick="playAudio('Rattle.wav', 'Rattle', 'size unknown')">Rattle.wav</a>
+            </li>
+            <li class="file">
+                <a href="javascript:void(0);" onclick="playAudio('Sike.aif', 'Sike', 'size unknown')">Sike.aif</a>
             </li>
         </ul>
     </div>
 
-    <!-- Audio Player -->
     <div class="audio-player" id="audioPlayer">
         <a class="close-player" href="javascript:void(0);" onclick="closePlayer()">✖ Close</a>
         <h3 id="audioTitle"></h3>
@@ -166,17 +226,16 @@
         </audio>
     </div>
 
-    <!-- Credits Scene -->
     <div class="credits">
         © 2024 by Abhi. All rights reserved. Unauthorized duplication is a violation of applicable laws and will be severely prosecuted.
     </div>
 
+    <div class="sphere"></div>
+
     <script>
-        // Toggle folder visibility
         function toggleFolder(folderId) {
             const folderElement = document.getElementById(folderId);
             const folderToggle = folderElement.previousElementSibling;
-
             if (folderElement.classList.contains('hidden')) {
                 folderElement.classList.remove('hidden');
                 folderToggle.classList.add('open');
@@ -186,18 +245,29 @@
             }
         }
 
-        // Play audio file
         function playAudio(file, title, size) {
             document.getElementById('audioTitle').innerText = title + " (" + size + ")";
             document.getElementById('audioControl').src = file;
             document.getElementById('audioPlayer').style.display = 'block';
         }
 
-        // Close audio player
         function closePlayer() {
             document.getElementById('audioPlayer').style.display = 'none';
             document.getElementById('audioControl').pause();
         }
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const files = document.querySelectorAll('.file');
+            files.forEach(file => {
+                const text = file.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    file.style.display = 'flex';
+                } else {
+                    file.style.display = 'none';
+                }
+            });
+        });
     </script>
 
 </body>
