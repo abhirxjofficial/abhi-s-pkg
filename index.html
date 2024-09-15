@@ -6,49 +6,73 @@
     <title>abhi's pkg</title>
     <style>
         body {
-            font-family: monospace;
-            background-color: #000;
-            color: #fff;
-            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0d0d0d;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-size: 16px;
         }
         h1 {
-            text-align: left;
-            font-size: 24px;
+            text-align: center;
+            font-size: 28px;
+            margin: 20px 0;
+            color: #ffffff;
         }
         .folder, .file {
-            display: block;
-            margin-bottom: 8px;
-            transition: transform 0.3s ease-in-out;
             font-size: 18px;
+            margin: 5px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border-radius: 5px;
+        }
+        .folder::before {
+            content: '▶';
+            margin-right: 10px;
+            transition: transform 0.2s ease;
+        }
+        .folder.open::before {
+            transform: rotate(90deg);
         }
         a {
             text-decoration: none;
-            color: #fff;
-            position: relative;
-            z-index: 1;
-            display: inline-block;
-            transition: color 0.5s ease-in-out, transform 0.5s ease-in-out;
+            color: #e0e0e0;
+            transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out;
         }
         a:hover {
-            transform: scale(1.1) rotate(5deg);
-            text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 30px #ff00ff, 0 0 40px #ff00ff;
-            animation: colorChange 1s infinite;
-        }
-        @keyframes colorChange {
-            0% { color: #ff0000; }
-            25% { color: #00ff00; }
-            50% { color: #0000ff; }
-            75% { color: #ff00ff; }
-            100% { color: #ffff00; }
+            color: #ff33cc;
+            text-shadow: 0 0 10px #ff33cc;
         }
         .container {
-            margin: 0;
+            padding: 0 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .file-list {
+            margin-left: 20px;
+            list-style: none;
+            padding-left: 0;
         }
         /* Audio player styling */
         .audio-player {
-            text-align: left;
-            margin-top: 20px;
             display: none;
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 10px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
         }
         audio {
             width: 100%;
@@ -56,16 +80,54 @@
         .audio-player h3 {
             font-size: 18px;
             margin-bottom: 10px;
+            color: #ffffff;
         }
-        /* Back button */
-        .back-button {
-            color: #fff;
+        /* Close button for music player */
+        .close-player {
+            color: #ff33cc;
             cursor: pointer;
             text-decoration: underline;
-            transition: color 0.3s ease;
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
-        .back-button:hover {
-            color: #ff00ff;
+        .close-player:hover {
+            color: #ff0000;
+        }
+        /* File size display */
+        .file-size {
+            font-size: 14px;
+            color: #999;
+            margin-left: 10px;
+        }
+        /* Download link styling */
+        .download-link {
+            margin-left: 10px;
+            color: #ff33cc;
+            text-decoration: underline;
+        }
+        .download-link:hover {
+            color: #ff0000;
+        }
+        /* Credit scene */
+        .credits {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            background-color: #0d0d0d;
+            color: #e0e0e0;
+            padding: 20px;
+            animation: scrollCredits 10s linear infinite;
+        }
+        @keyframes scrollCredits {
+            0% {
+                transform: translateY(100%);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
         }
     </style>
 </head>
@@ -73,53 +135,68 @@
 
     <h1>abhi's pkg</h1>
 
+    <!-- Folder View -->
     <div id="folderView" class="container">
-        <!-- List files directly -->
-        <div class="folder">
-            <a href="javascript:void(0);" onclick="openFolder('Music')">[Music]</a>
-        </div>
+        <div class="folder" onclick="toggleFolder('musicFolder')">[Music]</div>
+        <ul id="musicFolder" class="file-list hidden">
+            <li class="file">
+                <a href="javascript:void(0);" onclick="playAudio('Diamonds On v2.mp3', 'Diamonds On v2', '5.2 MB')">Diamonds On v2.mp3</a>
+                <span class="file-size">(5.2 MB)</span>
+                <a href="/mnt/data/Diamonds%20On%20v2.mp3" download class="download-link">Download</a>
+            </li>
+            <li class="file">
+                <a href="javascript:void(0);" onclick="playAudio('super fast.mp3', 'super fast', '3.8 MB')">super fast.mp3</a>
+                <span class="file-size">(3.8 MB)</span>
+                <a href="/mnt/data/super%20fast.mp3" download class="download-link">Download</a>
+            </li>
+            <li class="file">
+                <a href="javascript:void(0);" onclick="playAudio('scalin master v3.mp3', 'scalin master v3', '4.1 MB')">scalin master v3.mp3</a>
+                <span class="file-size">(4.1 MB)</span>
+                <a href="/mnt/data/scalin%20master%20v3.mp3" download class="download-link">Download</a>
+            </li>
+        </ul>
     </div>
 
-    <!-- Music Folder -->
-    <div id="musicFolder" class="container" style="display:none;">
-        <div class="file">
-            <a href="javascript:void(0);" onclick="playAudio('Diamonds On v2.mp3')">Diamonds On v2.mp3</a>
-        </div>
-        <div class="file">
-            <a href="javascript:void(0);" onclick="playAudio('super fast.mp3')">super fast.mp3</a>
-        </div>
-        <div class="file">
-            <a href="javascript:void(0);" onclick="playAudio('scalin master v3.mp3')">scalin master v3.mp3</a>
-        </div>
-    </div>
-
+    <!-- Audio Player -->
     <div class="audio-player" id="audioPlayer">
+        <a class="close-player" href="javascript:void(0);" onclick="closePlayer()">✖ Close</a>
         <h3 id="audioTitle"></h3>
         <audio id="audioControl" controls>
             Your browser does not support the audio element.
         </audio>
-        <br>
-        <a class="back-button" href="javascript:void(0);" onclick="goBack()">⬅ Back to Music Folder</a>
+    </div>
+
+    <!-- Credits Scene -->
+    <div class="credits">
+        © 2024 by Abhi. All rights reserved. Unauthorized duplication is a violation of applicable laws and will be severely prosecuted.
     </div>
 
     <script>
-        function openFolder(folder) {
-            document.getElementById('folderView').style.display = 'none';
-            if (folder === 'Music') {
-                document.getElementById('musicFolder').style.display = 'block';
+        // Toggle folder visibility
+        function toggleFolder(folderId) {
+            const folderElement = document.getElementById(folderId);
+            const folderToggle = folderElement.previousElementSibling;
+
+            if (folderElement.classList.contains('hidden')) {
+                folderElement.classList.remove('hidden');
+                folderToggle.classList.add('open');
+            } else {
+                folderElement.classList.add('hidden');
+                folderToggle.classList.remove('open');
             }
         }
 
-        function playAudio(file) {
-            document.getElementById('musicFolder').style.display = 'none';
-            document.getElementById('audioPlayer').style.display = 'block';
-            document.getElementById('audioTitle').innerText = file;
+        // Play audio file
+        function playAudio(file, title, size) {
+            document.getElementById('audioTitle').innerText = title + " (" + size + ")";
             document.getElementById('audioControl').src = file;
+            document.getElementById('audioPlayer').style.display = 'block';
         }
 
-        function goBack() {
+        // Close audio player
+        function closePlayer() {
             document.getElementById('audioPlayer').style.display = 'none';
-            document.getElementById('musicFolder').style.display = 'block';
+            document.getElementById('audioControl').pause();
         }
     </script>
 
