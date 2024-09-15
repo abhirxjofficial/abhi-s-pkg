@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>abhi's pkg</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #101010;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .folder, .file {
+            background-color: #202020;
+            border-radius: 8px;
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .folder:hover, .file:hover {
+            background-color: #303030;
+        }
+        .folder-icon, .file-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .audio-player {
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .back-button {
+            margin-top: 20px;
+            cursor: pointer;
+            color: #f0f0f0;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>abhi's pkg</h1>
+    
+    <div id="folderView" class="container">
+        <!-- Music Folder -->
+        <div class="folder" onclick="openFolder('Music')">
+            <div class="folder-icon">📁</div>
+            <div>Music</div>
+        </div>
+    </div>
+
+    <!-- Music Folder -->
+    <div id="musicFolder" class="container" style="display:none;">
+        <div class="file" onclick="playAudio('Diamonds On v2.mp3')">
+            <div class="file-icon">🎵</div>
+            <div>Diamonds On v2.mp3</div>
+        </div>
+        <div class="file" onclick="playAudio('super fast.mp3')">
+            <div class="file-icon">🎵</div>
+            <div>super fast.mp3</div>
+        </div>
+        <div class="file" onclick="playAudio('scalin master v3.mp3')">
+            <div class="file-icon">🎵</div>
+            <div>scalin master v3.mp3</div>
+        </div>
+    </div>
+
+    <div class="audio-player" id="audioPlayer">
+        <h3 id="audioTitle"></h3>
+        <audio id="audioControl" controls>
+            Your browser does not support the audio element.
+        </audio>
+        <div class="back-button" onclick="goBack()">⬅ Back to Music Folder</div>
+    </div>
+
+    <script>
+        function openFolder(folder) {
+            document.getElementById('folderView').style.display = 'none';
+            if (folder === 'Music') {
+                document.getElementById('musicFolder').style.display = 'flex';
+            }
+        }
+
+        function playAudio(file) {
+            document.getElementById('musicFolder').style.display = 'none';
+            document.getElementById('audioPlayer').style.display = 'block';
+            document.getElementById('audioTitle').innerText = file;
+            document.getElementById('audioControl').src = file;
+        }
+
+        function goBack() {
+            document.getElementById('audioPlayer').style.display = 'none';
+            document.getElementById('musicFolder').style.display = 'flex';
+        }
+    </script>
+
+</body>
+</html>
